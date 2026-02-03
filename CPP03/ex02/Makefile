@@ -1,16 +1,16 @@
-NAME = bureaucrat
+NAME = fragTrap
 
 CPPC = c++
-CPPCFLAGS = -Wall -Wextra -Werror -std=c++98
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = main.cpp Bureaucrat.cpp
+SRCS = main.cpp ClapTrap.cpp ScavTrap.cpp FragTrap.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
-all : $(NAME)
+all = $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CPPC) $(CPPCFLAGS) $(OBJS) -o $(NAME)
+	$(CPPC) $(CPPFLAGS) $(OBJS) -o $(NAME)
 
 %.o : %.cpp
 	$(CPPC) $(CPPCFLAGS) -c $< -o $@

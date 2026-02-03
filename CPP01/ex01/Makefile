@@ -1,16 +1,16 @@
-NAME = bureaucrat
+NAME = zombie
 
 CPPC = c++
-CPPCFLAGS = -Wall -Wextra -Werror -std=c++98
+CPPCLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = main.cpp Bureaucrat.cpp
+SRCS = main.cpp Zombie.cpp zombieHorde.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CPPC) $(CPPCFLAGS) $(OBJS) -o $(NAME)
+	$(CPPC) $(CPPCLAGS) $(OBJS) -o $(NAME)
 
 %.o : %.cpp
 	$(CPPC) $(CPPCFLAGS) -c $< -o $@
