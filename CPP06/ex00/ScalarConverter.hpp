@@ -9,6 +9,7 @@ private:
     ScalarConverter();
     ScalarConverter(const ScalarConverter& other);
     ScalarConverter& operator=(const ScalarConverter& other);
+    ~ScalarConverter();
 
     static bool isPseudo(const std::string& literal);
     static bool isChar(const std::string& literal);
