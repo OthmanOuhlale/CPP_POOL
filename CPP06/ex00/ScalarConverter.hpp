@@ -21,6 +21,11 @@ private:
     static bool isFloat(const std::string& literal);
     static bool isDouble(const std::string& literal);
 
+    static void printChar(const double& value, const bool& is_pseudo);
+    static void printInt(const double& value, const bool& is_pseudo);
+    static void printFloat(const double& value, const bool& is_pseudo);
+    static void printDouble(const double& value, const bool& is_pseudo);
+
 public:
     static void convert(const std::string& literal);
 };

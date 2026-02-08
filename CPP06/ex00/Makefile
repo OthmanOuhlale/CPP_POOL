@@ -3,7 +3,7 @@ NAME = converter
 CPPC = c++
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = main.cpp ScalarConverter.cpp
+SRCS = main.cpp ScalarConverter.cpp TypeDetecter.cpp Printer.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 all : $(NAME)
