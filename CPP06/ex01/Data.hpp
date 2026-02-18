@@ -1,11 +1,13 @@
 #ifndef DATA_HPP
 #define DATA_HPP
 
-class Data
-{
-    private:
+#include <iostream>
 
-    public:
+struct Data
+{
+    std::string name;
+    int         value;
 };
+
 
 #endif
