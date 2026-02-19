@@ -2,7 +2,7 @@
 
 Base *generate(void) {
     int r = std::rand() % 3;
-
+    
     if (r == 0)
         return new A;
     else if (r == 1)
@@ -23,21 +23,21 @@ void identify(Base* p) {
 void identify(Base& p) {
     try
     {
-        dynamic_cast<A&>(p);
+        (void)dynamic_cast<A&>(p);
         std::cout << "A" << std::endl;
         return;
     }
     catch(...){}
     try
     {
-        dynamic_cast<B&>(p);
+        (void)dynamic_cast<B&>(p);
         std::cout << "B" << std::endl;
         return;
     }
     catch(...){}
     try
     {
-        dynamic_cast<C&>(p);
+        (void)dynamic_cast<C&>(p);
         std::cout << "C" << std::endl;
         return;
     }

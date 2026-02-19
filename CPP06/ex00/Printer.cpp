@@ -1,18 +1,16 @@
 #include "ScalarConverter.hpp"
 
 void ScalarConverter::printChar(const double& value, const bool& is_pseudo) {
-    // Print char 
     std::cout << "char: ";
     if (is_pseudo || value < 0 || value > 127)
         std::cout << "impossible\n";
-    else if (!std::isprint(static_cast<int>(value)))
+    else if (!std::isprint(static_cast<char>(value)))
         std::cout << "Non displayable\n";
     else
         std::cout << "'" << static_cast<char>(value) << "'\n";
 };
 
 void ScalarConverter::printInt(const double& value, const bool& is_pseudo) {
-    // Print int
     std::cout << "int: ";
     if (is_pseudo || value < std::numeric_limits<int>::min()
         || value > std::numeric_limits<int>::max())
@@ -22,7 +20,6 @@ void ScalarConverter::printInt(const double& value, const bool& is_pseudo) {
 };
 
 void ScalarConverter::printFloat(const double& value, const bool& is_pseudo) {
-    // Print float
     std::cout << "float: ";
     if (is_pseudo)
     {
@@ -44,7 +41,6 @@ void ScalarConverter::printFloat(const double& value, const bool& is_pseudo) {
 };
 
 void ScalarConverter::printDouble(const double& value, const bool& is_pseudo) {
-    // Print doubl
     std::cout << "double: ";
     if (is_pseudo)
     {

@@ -18,7 +18,6 @@ void ScalarConverter::convert(const std::string& literal)
     double  value;
     bool    is_pseudo = isPseudo(literal);
 
-    // Convert to double
     if (is_pseudo)
     {
         if (literal == "nan" || literal == "nanf")
