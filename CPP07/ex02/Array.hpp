@@ -2,6 +2,7 @@
 #define ARRAY_HPP
 
 #include <iostream>
+#include <exception>
 
 template <typename T>
 class Array {
@@ -15,6 +16,9 @@ class Array {
         Array&  operator=(const Array& other);
         T&      operator[](int index);
         int     size() const;
+        ~Array();
 };
+
+#include "Array.tpp"
 
 #endif
