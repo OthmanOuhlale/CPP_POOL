@@ -17,22 +17,42 @@ RPN& RPN::operator=(const RPN& other) {
 RPN::~RPN() {};
 
 int RPN::evaluate(const std::string& input) {
-    std::istringstream ss;
+    std::istringstream ss(input);
     std::string        token;
 
     while ( ss >> token)
     {
-        if (token == "+" || token == "-"
-            | token == "*" | token == "/")
+        if (token.size() == 1 && isdigit(token[0]))
         {
-            std::cout << "operator" << std::endl;
-        } else {
-            int value;
-            ss >> value;
+            int value = token[0] - '0';
             _data.push(value);
         }
-        
+        else if (token == "+" || token == "-" || token == "*" || token == "/")
+        {
+            if (_data.size() < 2)
+                throw std::runtime_error("Error");
+            int b = _data.top();
+            _data.pop();
+            int a = _data.top();
+            _data.pop();
+            if (token == "+")
+                _data.push(a + b);
+            if (token == "-")
+                _data.push(a - b);
+            if (token == "*")
+                _data.push(a * b);
+            if (token == "/")
+            {
+                if (b == 0)
+                    throw std::runtime_error("Error: division by zero");
+                _data.push(a / b);
+            }
+        }
+        else
+            throw std::runtime_error("Error");
     }
-    
-    return (0);
+    if (_data.size() != 1)
+        throw std::runtime_error("Error");
+
+    return (_data.top());
 }

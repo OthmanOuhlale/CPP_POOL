@@ -3,7 +3,9 @@
 
 #include <iostream>
 #include <stack>
+#include <cstdlib>
 #include <sstream>
+#include <exception>
 
 class RPN
 {
