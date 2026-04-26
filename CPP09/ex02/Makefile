@@ -3,7 +3,7 @@ NAME =  PmergeMe
 CPPC = c++
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = main.cpp PmergeMe.cpp
+SRCS = main.cpp PmergeMe.cpp Element.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 all : $(NAME)

@@ -1,6 +1,7 @@
 #ifndef PMERGEME_HPP
 #define PMERGEME_HPP
 
+#include "Element.hpp"
 #include <iostream>
 #include <vector>
 #include <deque>
@@ -31,7 +32,7 @@ class PmergeMe
         // void    divideToPairs();
         // void    buildMainAndPend();
 
-        void    fordJhonsonSort(std::vector<int>& vec);
+        void    fordJhonsonSort(std::vector<Element>& vec);
 };
 
 #endif

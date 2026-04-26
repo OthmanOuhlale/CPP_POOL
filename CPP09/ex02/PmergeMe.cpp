@@ -60,94 +60,61 @@ void PmergeMe::inputParsing(char** input) {
         throw std::runtime_error("Error");
 }
 
-// void PmergeMe::divideToPairs() {
-//     size_t i = 0;
-//     while (i + 1 < _vect.size())
-//     {
-//         int a = _vect[i];
-//         int b = _vect[i + 1];
-//         if (a > b)
-//             std::swap(a, b);
-
-//         _pairs.push_back(std::make_pair(a, b));
-
-//         i += 2;
-//     }
-//     if (_vect.size() % 2 != 0)
-//     {
-//         _hasLeftover = true;
-//         _leftover = _vect.back();
-//     }
-// }
-
-// void PmergeMe::buildMainAndPend() {
-//     if (_pairs.empty())
-//         return;
-//     for (size_t i = 0; i < _pairs.size(); i++)
-//         _main.push_back(_pairs[i].second);
-//     for (size_t i = 0; i < _pairs.size(); i++)
-//         _pend.push_back(_pairs[i].first);
-//     if (_hasLeftover)
-//         _pend.push_back(_leftover);
-// }
-
-// void PmergeMe::fordJhonsonSort(std::vector<int>& vec) {
-//     std::vector< std::pair<int, int> >  pairs;
-//     std::vector<int>                    bigs;
-//     std::vector<int>                    smalls;
-
-//     // create sorted pairs:
-//     for (size_t i = 0; i + 1 < vec.size(); i += 2)
-//     {
-//         int a = vec[i];
-//         int b = vec[i + 1];
-//         if (a > b)
-//             std::swap(a, b);
-
-//         pairs.push_back(std::make_pair(a, b));
-//     }
-
-//     // fill bigs and smalls:
-//     if (vec.size() <= 1)
-//         return;
-//     for (size_t i = 0; i < pairs.size(); i++)
-//         smalls.push_back(pairs[i].first);
-//     for (size_t i = 0; i < pairs.size(); i++)
-//         bigs.push_back(pairs[i].second);
-//     if (vec.size() % 2 != 0)
-//         smalls.push_back(vec.back());
-
-//     fordJhonsonSort(bigs);
-// }
-
-void PmergeMe::fordJhonsonSort(std::vector<int>& vec) {
-    std::vector<int>                    main;
-    std::vector<int>                    pend;
-
+void PmergeMe::fordJhonsonSort(std::vector<Element>& vec)
+{
     if (vec.size() <= 1)
         return;
+
+    std::vector<Element> main;
+    std::vector<Element> pend;
+
+    //Pairing
     for (size_t i = 0; i + 1 < vec.size(); i += 2)
     {
-        int a = vec[i];
-        int b = vec[i + 1];
-        if (a > b)
+        Element a = vec[i];
+        Element b = vec[i + 1];
+
+        if (a.value > b.value)
             std::swap(a, b);
 
-        pend.push_back(a);
         main.push_back(b);
+        pend.push_back(a);
     }
-    if (vec.size() % 2 != 0)
-        pend.push_back(vec.back());
 
+    Element leftover;
+    bool hasLeftover = false;
+
+    if (vec.size() % 2 != 0)
+    {
+        leftover = vec.back();
+        hasLeftover = true;
+    }
+
+    // sort big elements
     fordJhonsonSort(main);
 
-    // create a maped vector of smalls to optimize the insertion
-
-    // insert smalls using binary insertion to the main chain
+    // Insert pend into sorted main
     for (size_t i = 0; i < pend.size(); i++)
     {
-        std::vector<int>::iterator pos = std::lower_bound(main.begin(), main.end(), pend[i]);
+        size_t bound = i + 1;
+        if (bound > main.size())
+            bound = main.size();
+
+        std::vector<Element>::iterator pos =
+            std::lower_bound(main.begin(), main.begin() + bound, pend[i]);
+
         main.insert(pos, pend[i]);
     }
+
+    // Insert leftover
+    if (hasLeftover)
+    {
+        std::vector<Element>::iterator pos =
+            std::lower_bound(main.begin(), main.end(), leftover);
+
+        main.insert(pos, leftover);
+    }
+
+    // Copy result
     vec = main;
 }

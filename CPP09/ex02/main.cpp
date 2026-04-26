@@ -1,17 +1,17 @@
 #include "PmergeMe.hpp"
 
-void printVector(std::vector<int> vect) {
+void printVectorOfElements(std::vector<Element> vect) {
     for (size_t i = 0; i < vect.size(); i++)
-        std::cout << vect[i] << " ";
+        std::cout << vect[i].value << " ";
     std::cout << std::endl;
 }
 
-int main (int argc, char **argv) {
+int main(int argc, char **argv)
+{
     if (argc < 2)
     {
-        std::cerr << "Usage: ./PmergeMe <positive integer sequence>"
-                << std::endl;
-        return (1);
+        std::cerr << "Usage: ./PmergeMe <positive integer sequence>" << std::endl;
+        return 1;
     }
 
     PmergeMe pm;
@@ -20,25 +20,30 @@ int main (int argc, char **argv) {
     {
         pm.inputParsing(argv);
 
-        std::vector<int> vec = pm.getVect();
+        std::vector<int> input = pm.getVect();
+        std::vector<Element> vec;
 
-        std::cout << "Before: " << std::endl;
-        printVector(vec);
+        for (size_t i = 0; i < input.size(); i++)
+        {
+            Element e;
+            e.value = input[i];
+            vec.push_back(e);
+        }
+
+        std::cout << "Before: ";
+        printVectorOfElements(vec);
+        std::cout << std::endl;
 
         pm.fordJhonsonSort(vec);
 
-        std::cout << "After: " << std::endl;
-        printVector(vec);
+        std::cout << "After: ";
+        printVectorOfElements(vec);
+        std::cout << std::endl;
     }
-    catch(const std::exception& e)
+    catch (const std::exception& e)
     {
         std::cerr << e.what() << std::endl;
     }
-    // std::vector<int> vect = pm.getVect();
 
-    // for (std::vector<int>::iterator it = vect.begin(); it != vect.end(); ++it)
-    // {
-    //     std::cout << *it << std::endl;
-    // }    
-    return (0);
+    return 0;
 }
