@@ -10,6 +10,7 @@
 #include <exception>
 #include <cstdlib>
 #include <utility>
+#include <ctime>
 
 class PmergeMe
 {
@@ -32,7 +33,7 @@ class PmergeMe
         // void    divideToPairs();
         // void    buildMainAndPend();
 
-        void    fordJhonsonSort(std::vector<Element>& vec);
+        void    fordJohnsonSort(std::vector<Element>& vec);
 };
 
 #endif

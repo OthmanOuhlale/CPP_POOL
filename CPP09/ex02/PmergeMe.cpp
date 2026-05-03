@@ -60,15 +60,16 @@ void PmergeMe::inputParsing(char** input) {
         throw std::runtime_error("Error");
 }
 
-void PmergeMe::fordJhonsonSort(std::vector<Element>& vec)
+void PmergeMe::fordJohnsonSort(std::vector<Element>& vec)
 {
     if (vec.size() <= 1)
         return;
 
     std::vector<Element> main;
     std::vector<Element> pend;
+    std::vector<Element> pend_restord;
 
-    //Pairing
+
     for (size_t i = 0; i + 1 < vec.size(); i += 2)
     {
         Element a = vec[i];
@@ -77,44 +78,47 @@ void PmergeMe::fordJhonsonSort(std::vector<Element>& vec)
         if (a.value > b.value)
             std::swap(a, b);
 
+        b.addItem(main.size());
         main.push_back(b);
         pend.push_back(a);
     }
-
+    
     Element leftover;
     bool hasLeftover = false;
-
     if (vec.size() % 2 != 0)
     {
         leftover = vec.back();
         hasLeftover = true;
     }
 
-    // sort big elements
-    fordJhonsonSort(main);
-
-    // Insert pend into sorted main
-    for (size_t i = 0; i < pend.size(); i++)
+    fordJohnsonSort(main);
+    for(size_t i = 0; i < main.size(); i++)
     {
-        size_t bound = i + 1;
+        int idx = main[i].getItem();
+        pend_restord.push_back(pend[idx]);
+    }
+
+    main.insert(main.begin(), pend_restord[0]);
+    
+    for (size_t i = 1; i < pend_restord.size(); i++)
+    {
+        size_t bound = 2 * i + 1;
+
         if (bound > main.size())
             bound = main.size();
 
         std::vector<Element>::iterator pos =
-            std::lower_bound(main.begin(), main.begin() + bound, pend[i]);
+            std::lower_bound(main.begin(), main.begin() + bound, pend_restord[i]);
 
-        main.insert(pos, pend[i]);
+        main.insert(pos, pend_restord[i]);
     }
 
-    // Insert leftover
     if (hasLeftover)
     {
         std::vector<Element>::iterator pos =
             std::lower_bound(main.begin(), main.end(), leftover);
-
         main.insert(pos, leftover);
     }
 
-    // Copy result
     vec = main;
 }

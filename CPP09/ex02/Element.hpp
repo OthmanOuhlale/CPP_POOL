@@ -1,11 +1,17 @@
 #ifndef ELEMENT_HPP
 #define ELEMENT_HPP
+#include <vector>
 
 class Element
 {
     public:
         int value;
-        int pair_id;
+        std::vector<int> pair_ids;
+
+        static int comparisons;
+
+        void addItem(int idx);
+        int getItem();
         
         bool operator<(const Element& other) const;
 };

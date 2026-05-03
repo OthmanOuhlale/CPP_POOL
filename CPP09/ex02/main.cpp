@@ -34,11 +34,17 @@ int main(int argc, char **argv)
         printVectorOfElements(vec);
         std::cout << std::endl;
 
-        pm.fordJhonsonSort(vec);
+        clock_t startVec = clock();
+        pm.fordJohnsonSort(vec);
+        clock_t endVec = clock();
+        double timeVec = (double)(endVec - startVec);
 
         std::cout << "After: ";
         printVectorOfElements(vec);
         std::cout << std::endl;
+        std::cout << "Time to process a range of " << vec.size()
+        << " elements with std::vector : " << timeVec << std::endl;
+        std::cout << "Comparisons: " << Element::comparisons << std::endl;
     }
     catch (const std::exception& e)
     {
