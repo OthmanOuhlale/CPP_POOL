@@ -32,7 +32,7 @@ class PmergeMe
 
         // void    divideToPairs();
         // void    buildMainAndPend();
-
+        std::vector<size_t> jacobsthalOrder(size_t n);
         void    fordJohnsonSort(std::vector<Element>& vec);
 };
 
