@@ -60,7 +60,7 @@ void PmergeMe::inputParsing(char** input) {
         throw std::runtime_error("Error");
 }
 
-std::vector<size_t> PmergeMe::jacobsthalOrder(size_t n)
+std::vector<size_t> PmergeMe::jacobsthalOrderVector(size_t n)
 {
     std::vector<size_t> order;
     if (n == 0) return order;
@@ -72,7 +72,12 @@ std::vector<size_t> PmergeMe::jacobsthalOrder(size_t n)
 
     while (j_prev < n)
     {
-        size_t end = (j_curr < n) ? j_curr : n;
+        size_t end;
+        if (j_curr < n)
+            end = j_curr;
+        else
+            end = n;
+
         for (size_t i = end; i > j_prev; i--)
             order.push_back(i - 1);
 
@@ -83,7 +88,7 @@ std::vector<size_t> PmergeMe::jacobsthalOrder(size_t n)
     return order;
 }
 
-void PmergeMe::fordJohnsonSort(std::vector<Element>& vec)
+void PmergeMe::fordJohnsonSortVector(std::vector<Element>& vec)
 {
     if (vec.size() <= 1)
         return;
@@ -113,7 +118,7 @@ void PmergeMe::fordJohnsonSort(std::vector<Element>& vec)
         hasLeftover = true;
     }
 
-    fordJohnsonSort(mainChain);
+    fordJohnsonSortVector(mainChain);
 
     for (size_t i = 0; i < mainChain.size(); i++)
     {
@@ -125,7 +130,7 @@ void PmergeMe::fordJohnsonSort(std::vector<Element>& vec)
     for (size_t j = 0; j < pos.size(); j++)
         pos[j] = j;
 
-    std::vector<size_t> order = jacobsthalOrder(pend_restord.size());
+    std::vector<size_t> order = jacobsthalOrderVector(pend_restord.size());
 
     for (size_t k = 0; k < order.size(); k++)
     {
@@ -152,65 +157,118 @@ void PmergeMe::fordJohnsonSort(std::vector<Element>& vec)
     vec = mainChain;
 }
 
-// void PmergeMe::fordJohnsonSort(std::vector<Element>& vec)
-// {
-//     if (vec.size() <= 1)
-//         return;
+std::deque<size_t> PmergeMe::jacobsthalOrderDeque(size_t n)
+{
+    std::deque<size_t> order;
 
-//     std::vector<Element> main;
-//     std::vector<Element> pend;
-//     std::vector<Element> pend_restord;
+    if (n == 0)
+        return order;
 
+    order.push_back(0);
 
-//     for (size_t i = 0; i + 1 < vec.size(); i += 2)
-//     {
-//         Element a = vec[i];
-//         Element b = vec[i + 1];
+    size_t j_prev = 1;
+    size_t j_curr = 3;
 
-//         if (a.value > b.value)
-//             std::swap(a, b);
+    while (j_prev < n)
+    {
+        size_t end;
 
-//         b.addItem(main.size());
-//         main.push_back(b);
-//         pend.push_back(a);
-//     }
-    
-//     Element leftover;
-//     bool hasLeftover = false;
-//     if (vec.size() % 2 != 0)
-//     {
-//         leftover = vec.back();
-//         hasLeftover = true;
-//     }
+        if (j_curr < n)
+            end = j_curr;
+        else
+            end = n;
 
-//     fordJohnsonSort(main);
-//     for(size_t i = 0; i < main.size(); i++)
-//     {
-//         int idx = main[i].getItem();
-//         pend_restord.push_back(pend[idx]);
-//     }
+        for (size_t i = end; i > j_prev; i--)
+            order.push_back(i - 1);
 
-//     main.insert(main.begin(), pend_restord[0]);
-    
-//     for (size_t i = 1; i < pend_restord.size(); i++)
-//     {
-//         size_t bound = 2 * i + 1;
+        size_t j_next = j_curr + 2 * j_prev;
+        j_prev = j_curr;
+        j_curr = j_next;
+    }
 
-//         if (bound > main.size())
-//             bound = main.size();
+    return order;
+}
 
-//         std::vector<Element>::iterator pos =
-//             std::lower_bound(main.begin(), main.begin() + bound, pend_restord[i]);
+void PmergeMe::fordJohnsonSortDeque(std::deque<Element>& vec)
+{
+    if (vec.size() <= 1)
+        return;
 
-//         main.insert(pos, pend_restord[i]);
-//     }
+    std::deque<Element> mainChain;
+    std::deque<Element> pend;
+    std::deque<Element> pend_restord;
 
-//     if (hasLeftover)
-//     {
-//         std::vector<Element>::iterator pos =
-//             std::lower_bound(main.begin(), main.end(), leftover);
-//         main.insert(pos, leftover);
-//     }
+    for (size_t i = 0; i + 1 < vec.size(); i += 2)
+    {
+        Element a = vec[i];
+        Element b = vec[i + 1];
 
-//     vec = main;
-// }
+        if (a.value > b.value)
+            std::swap(a, b);
+
+        b.addItem(mainChain.size());
+
+        mainChain.push_back(b);
+        pend.push_back(a);
+    }
+
+    Element leftover;
+    bool hasLeftover = false;
+
+    if (vec.size() % 2 != 0)
+    {
+        leftover = vec.back();
+        hasLeftover = true;
+    }
+
+    fordJohnsonSortDeque(mainChain);
+
+    for (size_t i = 0; i < mainChain.size(); i++)
+    {
+        int idx = mainChain[i].getItem();
+        pend_restord.push_back(pend[idx]);
+    }
+
+    std::deque<size_t> pos(pend_restord.size());
+
+    for (size_t j = 0; j < pos.size(); j++)
+        pos[j] = j;
+
+    std::deque<size_t> order = jacobsthalOrderDeque(pend_restord.size());
+
+    for (size_t k = 0; k < order.size(); k++)
+    {
+        size_t j = order[k];
+
+        std::deque<Element>::iterator insertPos =
+            std::lower_bound(
+                mainChain.begin(),
+                mainChain.begin() + pos[j],
+                pend_restord[j]
+            );
+
+        size_t insertIdx = insertPos - mainChain.begin();
+
+        mainChain.insert(insertPos, pend_restord[j]);
+
+        for (size_t m = 0; m < pos.size(); m++)
+        {
+            if (pos[m] >= insertIdx)
+                pos[m]++;
+        }
+    }
+
+    if (hasLeftover)
+    {
+        std::deque<Element>::iterator insertPos =
+            std::lower_bound(
+                mainChain.begin(),
+                mainChain.end(),
+                leftover
+            );
+
+        mainChain.insert(insertPos, leftover);
+    }
+
+    vec = mainChain;
+}

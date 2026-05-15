@@ -8,9 +8,7 @@ RPN::RPN(const RPN& other) {
 
 RPN& RPN::operator=(const RPN& other) {
     if (this != &other)
-    {
         this->_data = other._data;
-    }
     return *this;
 }
 

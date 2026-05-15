@@ -30,10 +30,11 @@ class PmergeMe
         int     isNumber(std::string nbr) const;
         void    inputParsing(char** input);
 
-        // void    divideToPairs();
-        // void    buildMainAndPend();
-        std::vector<size_t> jacobsthalOrder(size_t n);
-        void    fordJohnsonSort(std::vector<Element>& vec);
+        std::vector<size_t> jacobsthalOrderVector(size_t n);
+        void    fordJohnsonSortVector(std::vector<Element>& vec);
+
+        std::deque<size_t> jacobsthalOrderDeque(size_t n);
+        void fordJohnsonSortDeque(std::deque<Element>& vec);
 };
 
 #endif

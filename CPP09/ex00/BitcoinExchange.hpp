@@ -14,12 +14,12 @@ class BitcoinExchange
         BitcoinExchange();
         ~BitcoinExchange();
 
-        int loadDatabase(const std::string& filename);
-        int parseLine(const std::string& line, size_t index);
-        int parseDate(const std::string& date);
-        int parseRate(const double rate);
+        int  loadDatabase(const std::string& filename);
+        int  parseLine(const std::string& line, size_t index);
+        int  parseDate(const std::string& date);
+        int  isValidRate(const std::string& rateStr);
+        int  parseRate(const double rate);
         void processInput(const std::string& filename);
-        double getRate(std::string& date);
 };
 
 #endif

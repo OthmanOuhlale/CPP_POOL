@@ -11,7 +11,6 @@ class RPN
 {
     private:
         std::stack<int> _data;
-        //int             result;
     public:
         RPN();
         RPN(const RPN& other);

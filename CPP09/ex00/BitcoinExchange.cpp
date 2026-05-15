@@ -76,6 +76,28 @@ int BitcoinExchange::parseDate(const std::string& date) {
     return (0);
 }
 
+int BitcoinExchange::isValidRate(const std::string& rateStr)
+{
+    int dotCount = 0;
+
+    if (rateStr.empty())
+        return (0);
+
+    for (size_t i = 0; i < rateStr.length(); i++)
+    {
+        if (rateStr[i] == '.')
+        {
+            dotCount++;
+            if (dotCount > 1)
+                return (0);
+        }
+        else if (!isdigit(rateStr[i]) && !(i == 0 && rateStr[i] == '-'))
+            return (0);
+    }
+
+    return (1);
+}
+
 int BitcoinExchange::parseRate(const double rate) {
     if (rate < 0)
     {
@@ -107,8 +129,7 @@ void BitcoinExchange::processInput(const std::string& filename) {
 
         size_t pos = line.find('|');
 
-        if (parseLine(line, pos))
-        {
+        if (parseLine(line, pos)) {
             std::cout << "Error: bad input => " << line << std::endl;
             continue;
         }
@@ -119,17 +140,20 @@ void BitcoinExchange::processInput(const std::string& filename) {
         while (!date.empty() && (date[date.size() - 1] == ' ' || date[date.size() - 1] == '\t'))
             date.erase(date.size() - 1);
         
-        if (parseDate(date))
-        {
+        if (parseDate(date)) {
             std::cout << "Error: bad input => " << line << std::endl;
             continue;
         }
 
         std::string rateStr = line.substr(pos + 1);
 
-
-        while (!rateStr.empty() && (rateStr[0] == ' ' || rateStr[0] == '\t'))
+        if (!rateStr.empty() && (rateStr[0] == ' ' || rateStr[0] == '\t'))
             rateStr.erase(0, 1);
+
+        if (!isValidRate(rateStr)) {
+            std::cout << "Error: bad input => " << line << std::endl;
+            continue;
+        }
 
         double rate = std::atof(rateStr.c_str());
 
