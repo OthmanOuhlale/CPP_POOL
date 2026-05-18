@@ -10,7 +10,7 @@
 #include <exception>
 #include <cstdlib>
 #include <utility>
-#include <ctime>
+#include <sys/time.h>
 
 class PmergeMe
 {

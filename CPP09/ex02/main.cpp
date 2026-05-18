@@ -1,6 +1,11 @@
 #include "PmergeMe.hpp"
-#include <ctime>
-#include <iomanip>
+
+static time_t now_us()
+{
+    timeval tv;
+    gettimeofday(&tv, 0);
+    return tv.tv_sec * 1000000LL + tv.tv_usec;
+}
 
 void printVector(const std::vector<int>& vec)
 {
@@ -49,12 +54,9 @@ int main(int argc, char **argv)
 
         Element::comparisons = 0;
 
-        clock_t startVec = clock();
+        long long startVec = now_us();
         pm.fordJohnsonSortVector(vec);
-        clock_t endVec = clock();
-
-        double timeVec =
-            ((double)(endVec - startVec) / CLOCKS_PER_SEC) * 1000000;
+        long long endVec = now_us();
 
         // DEQUE
         std::deque<Element> deq;
@@ -66,37 +68,27 @@ int main(int argc, char **argv)
             deq.push_back(e);
         }
 
-        clock_t startDeque = clock();
+        long long startDeque = now_us();
         pm.fordJohnsonSortDeque(deq);
-        clock_t endDeque = clock();
-
-        double timeDeque =
-            ((double)(endDeque - startDeque) / CLOCKS_PER_SEC) * 1000000;
+        long long endDeque = now_us();
 
         // AFTER
         std::cout << "After:  ";
         printVectorElements(vec);
 
         // TIMES
-        std::cout << std::fixed << std::setprecision(5);
-
         std::cout << "Time to process a range of "
                   << inputVec.size()
                   << " elements with std::vector : "
-                  << timeVec
+                  << endVec - startVec
                   << " us"
                   << std::endl;
 
         std::cout << "Time to process a range of "
                   << inputDeque.size()
                   << " elements with std::deque  : "
-                  << timeDeque
+                  << endDeque - startDeque
                   << " us"
-                  << std::endl;
-
-        // COMPARISONS
-        std::cout << "Comparisons: "
-                  << Element::comparisons
                   << std::endl;
     }
     catch (const std::exception& e)
